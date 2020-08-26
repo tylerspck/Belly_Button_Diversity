@@ -5,9 +5,9 @@ function init() {
         // console.log(json_data)
         var names = json_data.names;
         // console.log(names)
-        var metadata = json_data.metadata;
+        // var metadata = json_data.metadata;
         // console.log(metadata)
-        var samples = json_data.samples;
+        // var samples = json_data.samples;
         // console.log(samples)
 
         var dropdown = d3.select("#selDataset");
@@ -38,7 +38,7 @@ function demograph_info(selected_id) {
         var metadata_index = d3.select("#sample-metadata")
         metadata_index.html('');
         Object.entries(filter_metadata).forEach(([k, v]) => {
-            metadata_index.append("p").text(`${k}: ${v}`)
+            metadata_index.append("p").text(`${k.toUpperCase()}: ${v}`)
         });
     });
 };
@@ -47,7 +47,8 @@ function horizontal_bargraph(selected_id) {
     d3.json(url).then((sample_data) => {
         var sample = sample_data.samples;
         var filter_sampledata = sample.filter(sample_name => sample_name.id == selected_id)[0];
-        var top10_otu_ids = filter_sampledata.otu_ids.slice(0,10).map(otu_ids => "OTU" + otu_ids.toString()).reverse();
+        var top10_otu_ids = filter_sampledata.otu_ids.slice(0,10);
+        var string_top10_otu_ids = top10_otu_ids.map(otu_ids => "OTU" + otu_ids.toString()).reverse();
         var top10_otu_labels = filter_sampledata.otu_labels.slice(0,10).reverse();
         var top10_values =  filter_sampledata.sample_values.slice(0,10).reverse();
         // console.log(top10_otu_labels);
@@ -59,7 +60,7 @@ function horizontal_bargraph(selected_id) {
         bar_index.html('');
         var trace = {
             x: top10_values,
-            y: top10_otu_ids,
+            y: string_top10_otu_ids,
             text: top10_otu_labels,
             orientation: 'h',
             type: 'bar'
@@ -150,6 +151,9 @@ function bubble_chart(selected_id) {
         var databubble = [trace];
 
         var bubble_Layout = {
+            xaxis:{
+                title: {text:"OTU ID"}
+            },
             showlegend: false,
             autosize: true
         };
