@@ -6,9 +6,9 @@ function init() {
         var names = json_data.names;
         // console.log(names)
         var metadata = json_data.metadata;
-        console.log(metadata)
+        // console.log(metadata)
         var samples = json_data.samples;
-        console.log(samples)
+        // console.log(samples)
 
         var dropdown = d3.select("#selDataset");
 
@@ -80,7 +80,7 @@ function washing_guage(selected_id) {
         var metadata = sample_data.metadata;
         var filter_washing = metadata.filter(sample_name => sample_name.id == selected_id)[0];
         var washes = filter_washing.wfreq;
-        console.log(washes);
+        // console.log(washes);
        
 
 
@@ -97,9 +97,9 @@ function washing_guage(selected_id) {
             type: "indicator",
             mode: "gauge+number",
             gauge: {
-                axis: { range: [null, 10] },
+                axis: { range: [null, 9] },
                 steps: [
-                    { range: [2, 6], color: "lightgray" },
+                    { range: [2, 5], color: "lightgray" },
                     { range: [0, 2], color: "gray" }
                 ],
                     threshold: {
@@ -120,8 +120,44 @@ function washing_guage(selected_id) {
     });
 };
 
-function bubble_chart() {
+function bubble_chart(selected_id) {
+    d3.json(url).then((sample_data) => {
+        var sample = sample_data.samples;
+        var filter_bubble_data = sample.filter(sample_name => sample_name.id == selected_id)[0];
+        var otu_ids = filter_bubble_data.otu_ids
+        var sample_values = filter_bubble_data.sample_values
+        var otu_labels = filter_bubble_data.otu_labels
 
+        // console.log(filter_bubble_data);
+        // console.log(otu_ids)
+        // console.log(sample_values)
+
+
+
+        var bubble_index = d3.select("#bubble")
+        bubble_index.html('');
+        var trace = { 
+            x: otu_ids,
+            y: sample_values,
+            text: otu_labels,
+            mode: 'markers',
+            marker: {
+                color: otu_ids,
+                size: sample_values
+            }
+        };
+
+        var databubble = [trace];
+
+        var bubble_Layout = {
+            showlegend: false,
+            autosize: true
+        };
+
+        var config = { responsive: true }
+
+        Plotly.newPlot('bubble', databubble, bubble_Layout, config)
+    });
 };
 
 
@@ -130,7 +166,7 @@ function optionChanged(newSelection) {
     horizontal_bargraph(newSelection);
     washing_guage(newSelection);
     bubble_chart(newSelection)
-    console.log(newSelection)
+    // console.log(newSelection)
 };
 
 init()
