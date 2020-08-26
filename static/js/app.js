@@ -28,7 +28,14 @@ function init() {
     });
 };
 
-
+d3.select("#selDataset").on("change", function() {
+    var newSelection = d3.select("#selDataset").property("value")
+    console.log(newSelection)
+    demograph_info(newSelection);
+    horizontal_bargraph(newSelection);
+    washing_guage(newSelection);
+    bubble_chart(newSelection)
+});
 
 
 function demograph_info(selected_id) {
@@ -162,15 +169,6 @@ function bubble_chart(selected_id) {
 
         Plotly.newPlot('bubble', databubble, bubble_Layout, config)
     });
-};
-
-
-function optionChanged(newSelection) {
-    demograph_info(newSelection);
-    horizontal_bargraph(newSelection);
-    washing_guage(newSelection);
-    bubble_chart(newSelection)
-    // console.log(newSelection)
 };
 
 init()
