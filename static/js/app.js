@@ -30,7 +30,7 @@ function init() {
 
 d3.select("#selDataset").on("change", function() {
     var newSelection = d3.select("#selDataset").property("value")
-    console.log(newSelection)
+    // console.log(newSelection)
     demograph_info(newSelection);
     horizontal_bargraph(newSelection);
     washing_guage(newSelection);
@@ -152,6 +152,7 @@ function bubble_chart(selected_id) {
             marker: {
                 color: otu_ids,
                 size: sample_values
+            
             }
         };
 
